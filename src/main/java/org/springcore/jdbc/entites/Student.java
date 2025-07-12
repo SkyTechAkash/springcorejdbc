@@ -1,7 +1,7 @@
 package org.springcore.jdbc.entites;
 
 public class Student {
-	
+	public Student(){}
 	private int id;
 	private String name;
 	private String city;

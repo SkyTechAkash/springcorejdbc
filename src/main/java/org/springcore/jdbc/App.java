@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 
 import org.springcore.jdbc.entites.Student;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -18,7 +19,8 @@ public class App {
 		
 		// Traditional Way to run the db query
 		// get the bean object of JDBC Template
-		ApplicationContext context = new ClassPathXmlApplicationContext("org/springcore/jdbc/Config.xml");
+		//ApplicationContext context = new ClassPathXmlApplicationContext("org/springcore/jdbc/Config.xml"); // ---> used for XML Configuration....
+		ApplicationContext context = new AnnotationConfigApplicationContext(JdbcConfig.class);  // ---> used for without Configuration.....
 		/*
 		 * JdbcTemplate template = context.getBean("jdbcTemplate",JdbcTemplate.class);
 		 * 
@@ -28,11 +30,13 @@ public class App {
 		 */
 
 		// Best Practice to do ... recommended way for Enterprise Level
-		Object bean = context.getBean("studentImpl");
-		StudentDao getDao = (StudentDao) bean;
+		StudentDao getDao = context.getBean("studentDao",StudentDao.class);
+		//StudentDao getDao = (StudentDao) bean;
 
 		// insert StudentData.........................
-		  Student std = new Student(); std.setId(101); std.setName("Karishma");
+		  Student std = new Student(); 
+		  std.setId(106); 
+		  std.setName("Aditi");
 		  std.setCity("Meerut"); getDao.insert(std);
 		  System.out.println("Data has been inserted......");
 
@@ -54,7 +58,7 @@ public class App {
 		 */
 
 		// Selecting the single StudentData Object from Student Table
-		Student findById = getDao.findById(103);
+		Student findById = getDao.findById(104);
 		System.out.println(findById);
 		
 		//Selecting the List of StudentData Object from Student Table
